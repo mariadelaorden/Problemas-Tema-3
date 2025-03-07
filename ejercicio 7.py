@@ -62,7 +62,7 @@ def imprimir_matriz(matriz, nombres):
     for i, fila in enumerate(matriz):
         print(f"{nombres[i]:<3} | " + " ".join(map(str, fila))) #nombres con barra mas matriz
 
-"Plzas: 1 si, 0 no "
+"Plazas: 1 si, 0 no "
 "- ARO: puede ir a ruido, a sapo y a osa"
 "- RUIDO: pude ir a osa "
 "- OSA: puede ir a sapo"

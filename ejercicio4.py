@@ -1,77 +1,73 @@
-def tamano_correcto (botella : int, corcho : int) -> int:
-    """ Verificar si el tamaño de la botella y el corcho son iguales """
-    return botella == corcho
-
-def comparar (botella : int, corcho : int) -> int: 
+def comparar (botella : int, corcho : int) -> int:
     """ Compara el tamaño de la botella y el corcho """
-    if botella == corcho:
-        return 0 # el corcho es adecuado
-    elif botella < corcho:
-        return -1 # la botella es más pequeño que el corcho
+    if botella == corcho :
+        return 0 # la botella es del tamaño del corcho
+    elif botella < corcho :
+        return -1 # la botella es más pequeña que el corcho
     else :
         return 1 # la botella es más grande que el corcho
 
-def taponar_botellas(botellas : list[int], corchos : list[int]) -> bool :
-    """ Algoritmo principal para taponar las botellas """
-    # Caso base: si solo hay una botella y un corchos, verifico si el corcho es adecuado para la botella
-    if len(botellas) <= 1 :
-        if botellas and corchos and tamano_correcto(botellas[0], corchos[0]):
-            return [(botellas[0], corchos[0])]
-        else :
-            return []
-        
-    # Seleccionar una botella de inicio
-    botella_inicial = botellas[0]
+def emparejar_corchos_botellas(botellas : list[int], corchos : list[int]) -> list[tuple[int, int]]:
+    """ Empareja corchos y botellas usando un algoritmo divide y vencerás """
 
-    # Dividir los corchos en dos grupos: corchos grandes, adecuados y pequeños
-    corchos_adecuados = []
-    corchos_grandes = []
-    corchos_pequenos = []
-
-    # Comparo los corchos con las botellas y los asigno a cada lista según corresponda
-    for corcho in corchos: 
-        comparo = comparar(botella_inicial, corcho)
-        if comparo == 0:
-            corchos_adecuados.append(corcho)
-        elif comparo < 0:
-            corchos_pequenos.append(corcho)
+    # Caso base: en caso de solo tener una botella y un corcho, verifica si son compatibles
+    if len(botellas) == 1 and len(corchos) == 1 :
+        if comparar(botellas[0], corchos[0]) == 0:
+            return [(botellas[0], corchos[0])] # si el tamaño de la botella y el corcho coincice devuelve la botella con su corcho correspondiente
         else:
-            corchos_grandes.append(corcho)
+            return [] # si no son del mismo tamaño devuelve una lista vacía
+    elif not botellas or not corchos :
+        return []    
 
-    # Si ningún corcho es adecuado, devolverá una lista vacía
-    if not corchos_adecuados :
-        return []
-    
-    # Encuentro el corcho adecuado y lo quito de la lista
-    corcho_adecuado = corchos_adecuados[0]
-    corchos.remove(corcho_adecuado)
+    # Divido en dos mitades los corchos y las botellas
+    medio = len(botellas) // 2
+    corchos_izq = botellas[:medio]
+    corchos_dch = botellas[medio:]
+    botellas_izq = botellas[:medio]
+    botellas_dch = botellas[medio:]
 
-    # Divido la lista a la mitad y recursivamente voy comprobando los corchos
-    mitad_izquierda = taponar_botellas(botellas[1:], corchos_pequenos)
-    mitad_derecha = taponar_botellas(botellas[1:], corchos_grandes)
+    # Emparejar cada mitad de manera recursiva
+    emparejamiento_izq = emparejar_corchos_botellas(botellas_izq, corchos_izq)
+    emparejamiento_dch = emparejar_corchos_botellas(botellas_dch, corchos_dch)
 
-    # Combino las soluciones
-    mitades = [(botella_inicial, corcho_adecuado)] + mitad_izquierda + mitad_derecha
+    # Combinar los emparejamientos
+    emparejamiento_total = emparejamiento_izq + emparejamiento_dch
 
-    return mitades
+    return emparejamiento_total
 
-# Casos de prueba 
-botellas1 = [1, 2, 3, 4]
-corchos1 = [2, 4, 1, 3]
-resultado1 = taponar_botellas(botellas1, corchos1)
-print (resultado1)
+# Casos de Prueba
+botellas = [1, 3, 2, 4]
+corchos = [1, 2, 4, 3]
+emparejamiento = emparejar_corchos_botellas(botellas, corchos)
+for botella, corcho in emparejamiento:
+    print(f"Botella {botella} emparejada con Corcho {corcho}")
+
+botellas1 = []
+corchos1 = []
+emparejamiento1 = emparejar_corchos_botellas(botellas1, corchos1)
+for botella1, corcho1 in emparejamiento1:
+    print(f"Botella {botella1} emparejada con Corcho {corcho1}")
 
 botellas2 = [1]
-corchos2 = [1]
-resultado2 = taponar_botellas(botellas2, corchos2)
-print(resultado2)
+corchos2 = []
+emparejamiento2 = emparejar_corchos_botellas(botellas2, corchos2)
+for botella2, corcho2 in emparejamiento2:
+    print(f"Botella {botella2} emparejada con Corcho {corcho2}")
 
-botellas3 = []
-corchos3 = []
-resultado3 = taponar_botellas(botellas3, corchos3)
-print(resultado3)
+botellas3 = [1]
+corchos3 = [3]
+emparejamiento3 = emparejar_corchos_botellas(botellas3, corchos3)
+for botella3, corcho3 in emparejamiento3:
+    print(f"Botella {botella3} emparejada con Corcho {corcho3}")
 
-botellas4 = [1]
-corchos4 = [2]
-resultado4 = taponar_botellas(botellas4, corchos4)
-print(resultado4)
+# Test
+def test_comparar():
+    botella1 = [1]
+    corcho1 = [3]
+    botella2 = [1]
+    corcho2 = [1]
+    botella3 = [3]
+    corcho3 = [1]
+    assert comparar(botella1, corcho1) == -1
+    assert comparar(botella2, corcho2) == 0
+    assert comparar(botella3, corcho3) == 1
