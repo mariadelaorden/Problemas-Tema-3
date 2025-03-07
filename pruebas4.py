@@ -7,44 +7,34 @@ def comparar (botella : int, corcho : int) -> int:
     else :
         return 1 # la botella es más grande que el corcho
     
-def emparejar_corchos_botellas(botellas: list[int], corchos: list[int]) -> list[tuple[int, int]]:
-    """Empareja corchos y botellas usando un algoritmo divide y vencerás"""
+def emparejar_corchos_botellas(botellas, corchos):
+    if len(botellas) == 1:
+        if comparar(botellas[0], corchos[0]):
+            print(f"Tapar la botella {botellas[0]} con el corcho {corchos[0]}")
+        else:
+            print(f"El corcho {corchos[0]} no encaja en la botella {botellas[0]}")
+    else:
+        mitad = len(botellas) // 2
+        botellas1, botellas2 = botellas[:mitad], botellas[mitad:]
+        corchos1, corchos2 = corchos[:mitad], corchos[mitad:]
 
-    def dividir_y_vencer(botellas: list[int], corchos: list[int], resultado: list[tuple[int, int]]):
-        # Caso base: si alguna lista está vacía, no se puede emparejar
-        if not botellas or not corchos:
-            return
+        emparejar_corchos_botellas(botellas1, corchos1)
+        emparejar_corchos_botellas(botellas2, corchos2)
 
-        # Caso base: en caso de tener una sola botella y un solo corcho, verifica si son compatibles
-        if len(botellas) == 1 and len(corchos) == 1:
-            if comparar(botellas[0], corchos[0]) == 0:
-                resultado.append((botellas[0], corchos[0]))
-            return
+        combinar_resultados(botellas1, corchos1, botellas2, corchos2)
 
-        # Divide las listas en dos mitades
-        medio_botellas = len(botellas) // 2
-        medio_corchos = len(corchos) // 2
-
-        # Divide y vencer: empareja las mitades
-        dividir_y_vencer(botellas[:medio_botellas], corchos[:medio_corchos], resultado)
-        dividir_y_vencer(botellas[medio_botellas:], corchos[medio_corchos:], resultado)
-
-        # Combina los emparejamientos adicionales para asegurarse de no perder pares válidos
-        i, j = 0, 0
-        while i < len(botellas) and j < len(corchos):
-            if comparar(botellas[i], corchos[j]) == 0:
-                if (botellas[i], corchos[j]) not in resultado:
-                    resultado.append((botellas[i], corchos[j]))
-                i += 1
-                j += 1
-            elif comparar(botellas[i], corchos[j]) == -1:
-                i += 1
-            else:
-                j += 1
-
-    resultado = []
-    dividir_y_vencer(botellas, corchos, resultado)
-    return resultado
+def combinar_resultados(botellas1, corchos1, botellas2, corchos2):
+    for i in range(len(botellas1)):
+        if comparar(botellas1[i], corchos1[i]):
+            print(f"Tapar la botella {botellas1[i]} con el corcho {corchos1[i]}")
+        else:
+            print(f"El corcho {corchos1[i]} no encaja en la botella {botellas1[i]}")
+    
+    for i in range(len(botellas2)):
+        if comparar(botellas2[i], corchos2[i]):
+            print(f"Tapar la botella {botellas2[i]} con el corcho {corchos2[i]}")
+        else:
+            print(f"El corcho {corchos2[i]} no encaja en la botella {botellas2[i]}")
 
 botellas = [1, 3, 2, 4]
 corchos = [1, 2, 4, 3]
@@ -75,3 +65,17 @@ corchos4 = [5, 6, 8]
 emparejamiento4 = emparejar_corchos_botellas(botellas4, corchos4)
 for botella4, corcho4 in emparejamiento4:
     print(f"Botella {botella4} emparejada con Corcho {corcho4}")
+
+
+
+"""# Compara el elemento con el último de parte de la izquierda y el primero de la derecha 
+    if derecha and elemento == derecha[0]:
+        return [(elemento, derecha[0])] # si la lista derecha no está vacía compara el primer elemento de la lista de la derecha, si es igual, lo empareja
+    elif izquierda and elemento == izquierda[-1]:
+        return [(elemento, izquierda[-1])] # si la lista izquierda no está vacía compara el último elemento de la lista de la izquierda, si es igual, lo empareja
+    elif izquierda and derecha and elemento < derecha[0]:
+        return emparejar(elemento, izquierda) # si la lista izquierda y la derecha no están vacías compara el primer elemento de la lista de la derecha, si es menor es que se encuentra en la lista de la izquierda
+    elif izquierda and derecha and elemento > izquierda[-1]:
+        return emparejar(elemento, derecha) # si la lista izquierda y la derecha no están vacías compara el último elemento de la lista de la izquierda, si es mayor es que se encuentra en la lista de la derecha
+    else:
+        return []"""

@@ -1,50 +1,47 @@
-def comparar (botella : int, corcho : int) -> int:
-    """ Compara el tamaño de la botella y el corcho """
-    if botella == corcho :
-        return 0 # la botella es del tamaño del corcho
-    elif botella < corcho :
-        return -1 # la botella es más pequeña que el corcho
-    else :
-        return 1 # la botella es más grande que el corcho
+def emparejar(elemento : int, lista : list[int]) -> list[tuple[int, int]]:
+    """ Función que empareja un elemento con los elementos de una lista dividiéndola en dos partes """
+    if not lista:
+        return []
+    
+    # Divido la lista en dos partes
+    medio = len(lista) // 2
 
+    izquierda = lista[: medio]
+    derecha = lista [medio : ]
+
+    for elem in izquierda + derecha:
+        if elemento == elem:
+            return [(elemento, elem)]
+    return []
+        
 def emparejar_corchos_botellas(botellas : list[int], corchos : list[int]) -> list[tuple[int, int]]:
     """ Empareja corchos y botellas usando un algoritmo divide y vencerás """
 
+    # Caso base: en caso de solo tener una botella y un corcho, verifica si son compatibles
     if not botellas or not corchos :
         return []
-    
-    botellas.sort()
-    corchos.sort()
-
-    # Caso base: en caso de solo tener una botella y un corcho, verifica si son compatibles
-    if len(botellas) == 1 and len(corchos) == 1 :
-        if comparar(botellas[0], corchos[0]) == 0:
+    elif len(botellas) == 1 and len(corchos) == 1 :
+        if botellas[0] == corchos[0]:
             return [(botellas[0], corchos[0])] # si el tamaño de la botella y el corcho coincice devuelve la botella con su corcho correspondiente
         else:
-            return [] # si no son del mismo tamaño devuelve una lista vacía     
+            return [] # si no son del mismo tamaño devuelve una lista vacía   
 
-    # Divido en dos mitades los corchos y las botellas
-    medio = len(botellas) // 2
-    corchos_izq = corchos[:medio]
-    corchos_dch = corchos[medio:]
-    botellas_izq = botellas[:medio]
-    botellas_dch = botellas[medio:]
+    emparejamientos = []
 
-    # Emparejar cada mitad de manera recursiva
-    emparejamiento_izq = emparejar_corchos_botellas(botellas_izq, corchos_izq)
-    emparejamiento_dch = emparejar_corchos_botellas(botellas_dch, corchos_dch)
+    if len(corchos) >= len(botellas):
+        for botella in botellas:
+            emparejamientos.extend(emparejar(botella, corchos))
+    else :
+        for corcho in corchos:
+            emparejamientos.extend(emparejar(corcho, botellas))
 
-    # Combinar los emparejamientos
-    emparejamiento_total = emparejamiento_izq + emparejamiento_dch
-
-    return emparejamiento_total
+    return emparejamientos        
 
 # Casos de Prueba
 botellas = [1, 3, 2, 4]
 corchos = [1, 2, 4, 3]
 emparejamiento = emparejar_corchos_botellas(botellas, corchos)
-for botella, corcho in emparejamiento:
-    print(f"Botella {botella} emparejada con Corcho {corcho}")
+print(emparejamiento)
 
 botellas1 = []
 corchos1 = []
@@ -71,16 +68,6 @@ for botella4, corcho4 in emparejamiento4:
     print(f"Botella {botella4} emparejada con Corcho {corcho4}")
 
 # Test
-def test_comparar():
-    botella1 = 1
-    corcho1 = 3
-    botella2 = 1
-    corcho2 = 1
-    botella3 = 3
-    corcho3 = 1
-    assert comparar(botella1, corcho1) == -1
-    assert comparar(botella2, corcho2) == 0
-    assert comparar(botella3, corcho3) == 1
 
 def test_emparejar_corchos_botellas():
     # Pruebo los casos base
