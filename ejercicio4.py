@@ -55,8 +55,23 @@ def taponar_botellas(botellas : list[int], corchos : list[int]) -> bool :
 
     return mitades
 
+# Casos de prueba 
+botellas1 = [1, 2, 3, 4]
+corchos1 = [2, 4, 1, 3]
+resultado1 = taponar_botellas(botellas1, corchos1)
+print (resultado1)
 
-botellas = [1, 2, 3, 4]
-corchos = [2, 4, 1, 3]
-resultado = taponar_botellas(botellas, corchos)
-print (resultado)
+botellas2 = [1]
+corchos2 = [1]
+resultado2 = taponar_botellas(botellas2, corchos2)
+print(resultado2)
+
+botellas3 = []
+corchos3 = []
+resultado3 = taponar_botellas(botellas3, corchos3)
+print(resultado3)
+
+botellas4 = [1]
+corchos4 = [2]
+resultado4 = taponar_botellas(botellas4, corchos4)
+print(resultado4)
