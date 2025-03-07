@@ -1,3 +1,6 @@
+import io
+import contextlib
+
 """
 
   q1  |  q2
@@ -41,7 +44,7 @@ def combina(q1, q2, q3, q4):
     return nueva_matriz
 
 def transponer(matriz):
-    "intercambia filas por columnas"
+    " Intercambia filas por columnas "
     if(len(matriz)==1):
         return matriz
     q1, q2, q3, q4 = divide(matriz)
@@ -54,13 +57,13 @@ def transponer(matriz):
     return combina(new_q1, new_q2, new_q3, new_q4)
 
 def imprimir_matriz(matriz, nombres):
-    "imprime la matriz con sus respectivos nombres"
-    print("   " + " ".join(nombres))  
-    print("  " + "-" * (4 * len(nombres)))  # Línea guiones
+    " Imprime la matriz con sus respectivos nombres "
+    print("    " + "  ".join(nombres))
+    print("  " + "-" * (3 * len(nombres) + 1))  # Línea guiones
 
     # Imprimir filas con nombres
     for i, fila in enumerate(matriz):
-        print(f"{nombres[i]:<3} | " + " ".join(map(str, fila))) #nombres con barra mas matriz
+        print(f"{nombres[i]:<3} | " + "  ".join(map(str, fila))) #nombres con barra mas matriz
 
 "Plazas: 1 si, 0 no "
 "- ARO: puede ir a ruido, a sapo y a osa"
@@ -81,7 +84,78 @@ original = [[1, 1, 1, 1],
 
 print("Callejero original:\n")
 imprimir_matriz(original, plazas)
-print("Nuevo callejero:\n")
+print("\nNuevo callejero:\n")
 nuevo = transponer(original)  #calcula el nuevo callejero
 imprimir_matriz(nuevo, plazas)
 
+# Casos de prueba
+matriz = [[1, 1, 1, 1],
+          [0, 1, 1, 0],
+          [0, 0, 1, 1],
+          [1, 0, 1, 1]]
+q1 = [1, 1, 1, 1]
+q2 = [0, 1, 1, 0]
+q3 = [0, 0, 1, 1]
+q4 = [1, 0, 1, 1]
+funcion_divide = divide(matriz)
+funcion_combina = combina(q1, q2, q3, q4)
+funcion_transponer = transponer(matriz)
+funcion_imprimir = imprimir_matriz(matriz, plazas)
+print(funcion_divide)
+print(funcion_combina)
+print(funcion_transponer)
+print(funcion_imprimir)
+
+def test_divide():
+    matriz = [[1, 1, 1, 1],
+              [0, 1, 1, 0],
+              [0, 0, 1, 1],
+              [1, 0, 1, 1]]
+    q1 = [[1, 1], [0, 1]]
+    q2 = [[1, 1], [1, 0]]
+    q3 = [[0, 0], [1, 0]]
+    q4 = [[1, 1], [1, 1]]
+    res = (q1, q2, q3, q4)
+    assert divide(matriz) == res
+
+def test_combina():
+    q1 = [[1, 1], [0, 1]]
+    q2 = [[1, 1], [1, 0]]
+    q3 = [[0, 0], [1, 0]]
+    q4 = [[1, 1], [1, 1]]
+    matriz = [[1, 1, 1, 1],
+              [0, 1, 1, 0],
+              [0, 0, 1, 1],
+              [1, 0, 1, 1]]
+    assert combina(q1, q2, q3, q4) == matriz
+
+def test_transponer():
+    matriz = [[1, 1, 1, 1],
+              [0, 1, 1, 0],
+              [0, 0, 1, 1],
+              [1, 0, 1, 1]]
+    matriz_transpuesta = [[1, 0, 0, 1],
+                          [1, 1, 0, 0],
+                          [1, 1, 1, 1],
+                          [1, 0, 1, 1]]
+    assert transponer(matriz) == matriz_transpuesta
+
+def test_imprimir_matriz():
+    matriz = [[1, 1, 1, 1],
+              [0, 1, 1, 0],
+              [0, 0, 1, 1],
+              [1, 0, 1, 1]]
+    nombres = ['P1', 'P2', 'P3', 'P4']
+    salida_esperada = (
+        "    P1  P2  P3  P4\n"
+        "  -------------\n"
+        "P1  | 1  1  1  1\n"
+        "P2  | 0  1  1  0\n"
+        "P3  | 0  0  1  1\n"
+        "P4  | 1  0  1  1\n"
+    )
+    f = io.StringIO()
+    with contextlib.redirect_stdout(f):
+        imprimir_matriz(matriz, nombres)
+    salida_obtenida = f.getvalue()
+    assert salida_obtenida == salida_esperada, f"Error: esperado {salida_esperada}, pero se obtuvo {salida_obtenida}"

@@ -62,12 +62,35 @@ for botella3, corcho3 in emparejamiento3:
 
 # Test
 def test_comparar():
-    botella1 = [1]
-    corcho1 = [3]
-    botella2 = [1]
-    corcho2 = [1]
-    botella3 = [3]
-    corcho3 = [1]
+    botella1 = 1
+    corcho1 = 3
+    botella2 = 1
+    corcho2 = 1
+    botella3 = 3
+    corcho3 = 1
     assert comparar(botella1, corcho1) == -1
     assert comparar(botella2, corcho2) == 0
     assert comparar(botella3, corcho3) == 1
+
+def test_emparejar_corchos_botellas():
+    # Pruebo los casos base
+    botellas1 = [2]
+    corchos1 = [1]
+    res1 = []
+    assert emparejar_corchos_botellas(botellas1, corchos1) == res1
+
+    botellas2 = []
+    corchos2 = [1]
+    res2 = []
+    assert emparejar_corchos_botellas(botellas2, corchos2) == res2
+
+    botellas3 = [1]
+    corchos3 = [1]
+    res3 = [(1, 1)]
+    assert emparejar_corchos_botellas(botellas3, corchos3) == res3
+
+    # Pruebo la función
+    botellas = [1, 4, 3, 2]
+    corchos = [3, 2, 4, 1]
+    res = [(1, 1), (4, 4), (3, 3), (2, 2) ]
+    assert emparejar_corchos_botellas(botellas, corchos) == res
