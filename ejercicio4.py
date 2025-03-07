@@ -10,19 +10,23 @@ def comparar (botella : int, corcho : int) -> int:
 def emparejar_corchos_botellas(botellas : list[int], corchos : list[int]) -> list[tuple[int, int]]:
     """ Empareja corchos y botellas usando un algoritmo divide y vencerás """
 
+    if not botellas or not corchos :
+        return []
+    
+    botellas.sort()
+    corchos.sort()
+
     # Caso base: en caso de solo tener una botella y un corcho, verifica si son compatibles
     if len(botellas) == 1 and len(corchos) == 1 :
         if comparar(botellas[0], corchos[0]) == 0:
             return [(botellas[0], corchos[0])] # si el tamaño de la botella y el corcho coincice devuelve la botella con su corcho correspondiente
         else:
-            return [] # si no son del mismo tamaño devuelve una lista vacía
-    elif not botellas or not corchos :
-        return []    
+            return [] # si no son del mismo tamaño devuelve una lista vacía     
 
     # Divido en dos mitades los corchos y las botellas
     medio = len(botellas) // 2
-    corchos_izq = botellas[:medio]
-    corchos_dch = botellas[medio:]
+    corchos_izq = corchos[:medio]
+    corchos_dch = corchos[medio:]
     botellas_izq = botellas[:medio]
     botellas_dch = botellas[medio:]
 
@@ -60,6 +64,12 @@ emparejamiento3 = emparejar_corchos_botellas(botellas3, corchos3)
 for botella3, corcho3 in emparejamiento3:
     print(f"Botella {botella3} emparejada con Corcho {corcho3}")
 
+botellas4 = [5, 6, 7, 8]
+corchos4 = [5, 6, 8]
+emparejamiento4 = emparejar_corchos_botellas(botellas4, corchos4)
+for botella4, corcho4 in emparejamiento4:
+    print(f"Botella {botella4} emparejada con Corcho {corcho4}")
+
 # Test
 def test_comparar():
     botella1 = 1
@@ -92,5 +102,5 @@ def test_emparejar_corchos_botellas():
     # Pruebo la función
     botellas = [1, 4, 3, 2]
     corchos = [3, 2, 4, 1]
-    res = [(1, 1), (4, 4), (3, 3), (2, 2) ]
+    res = [(1, 1), (4, 4), (3, 3), (2, 2)]
     assert emparejar_corchos_botellas(botellas, corchos) == res
